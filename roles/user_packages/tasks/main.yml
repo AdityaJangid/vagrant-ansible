@@ -1,0 +1,45 @@
+---
+# tasks file for task
+- name: Ensure group {{ user.username }} exists
+  group:
+    name: "{{ user.username }}"
+    state: present
+
+- name: Add the user {{ user.username }} with group {{ user.username }}
+  user:
+    name: "{{ user.username }}"
+    shell: /bin/bash
+    comment: "{{ user.comment }}"
+    group: "{{ user.username }}"
+    home: "/home/{{ user.username }}"
+    state: present
+
+- name: set timezone to "{{ date_time.timezone }}"
+  timezone:
+    name: "{{ date_time.timezone }}"
+
+- name: Install apt packages
+  apt:
+    name:
+      - supervisor
+      - python
+      - python3
+
+- name: Check if python is already latest
+  command: python3 --version
+  register: python_version_result
+  failed_when: "{{ python_version_result.stdout | replace('Python ', '') | version_compare(python_version, '>=') }}"
+
+- name: Install prerequisites
+  apt: name=python-software-properties state=present
+
+- name: Add deadsnakes repo
+  apt_repository: repo="ppa:deadsnakes/ppa"
+
+- name: Install python
+  apt: name="python{{ python_version }}-dev" state=present
+
+- name: Copy Content
+  copy:
+    src: upload_file.txt
+    dest: /home/testuser/upload_file.txt

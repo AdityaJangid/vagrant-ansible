@@ -1,0 +1,13 @@
+---
+
+- hosts: all
+  become: true
+  gather_facts: no
+  pre_tasks:
+  - name: Install python for Ansible
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+    changed_when: False
+  - setup: 
+  roles:
+    - user_packages
+    - consul

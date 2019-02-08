@@ -1,0 +1,10 @@
+---
+# defaults file for task
+user:
+  username: testuser
+  comment: user for testing
+
+date_time:
+  timezone: Asia/Kolkata
+
+python_version: 3.7
