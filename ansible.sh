@@ -7,7 +7,7 @@ if ! command -v ansible >/dev/null; then
                 sudo apt-get install -y -qq git python python-dev
         elif command -v brew >/dev/null; then
                 brew install ansible
-		exit 1
+		exit 0
         else
                 echo "no yum, apt-get, brew found! hence exiting."
 		exit 1
